@@ -274,5 +274,60 @@
   </main>
 
   <script src="app.js"></script>
+  
+  <!-- CJK-Latin Typographic Spacing (Skill #6208) -->
+  <script>
+  /* CJK–Latin typographic spacing — 1/6 em at every boundary */
+  (function () {
+    const CJK   = '[\u4e00-\u9fff\u3400-\u4dbf\uff00-\uffef\u3000-\u303f\u2e80-\u2eff\u31c0-\u31ef]';
+    const LATIN = '[A-Za-z0-9%]';
+    const RE    = new RegExp(`(${CJK})(${LATIN})|(${LATIN})(${CJK})`, 'g');
+
+    /* Tags whose text content must never be touched */
+    const SKIP  = new Set(['SCRIPT','STYLE','SVG','CODE','PRE','TEXTAREA','INPUT','BUTTON']);
+
+    /* Currency / special characters that suppress spacing on either side */
+    const NO_SPACE_CHARS = new Set(['¥','$','€','£','₩','₿']);
+
+    function process(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        if (!RE.test(text)) return;
+        RE.lastIndex = 0;
+
+        const frag = document.createDocumentFragment();
+        let last = 0, m;
+
+        while ((m = RE.exec(text)) !== null) {
+          const splitAt = m.index + 1;
+
+          /* Skip if either adjacent character is a currency symbol */
+          if (NO_SPACE_CHARS.has(text[splitAt - 1]) || NO_SPACE_CHARS.has(text[splitAt])) {
+            RE.lastIndex = splitAt;
+            continue;
+          }
+
+          frag.appendChild(document.createTextNode(text.slice(last, splitAt)));
+
+          const sp = document.createElement('span');
+          sp.style.cssText = 'display:inline;margin:0 0.0833em;font-size:inherit;';
+          frag.appendChild(sp);
+
+          last = splitAt;
+          RE.lastIndex = splitAt;
+        }
+
+        frag.appendChild(document.createTextNode(text.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (SKIP.has(node.tagName)) return;
+        Array.from(node.childNodes).forEach(process);
+      }
+    }
+
+    process(document.body);
+  })();
+  </script>
 </body>
 </html>
