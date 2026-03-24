@@ -1,40 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0b1710;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1c3526;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d0d0d;stop-opacity:1" />
     </linearGradient>
   </defs>
   
   <!-- 背景 -->
   <rect width="256" height="256" fill="url(#bgGradient)"/>
   
-  <!-- 外层大圆（花粉浓度）-->
-  <circle cx="128" cy="128" r="70" fill="none" stroke="#a3e0b5" stroke-width="5" opacity="0.8"/>
+  <!-- 主叶子（左叶）-->
+  <path d="M 80 180 Q 60 140 70 100 Q 85 60 120 50 Q 110 80 115 120 Q 118 150 110 180 Q 95 190 80 180 Z" 
+        fill="#4CAF50" stroke="#2E7D32" stroke-width="2"/>
   
-  <!-- 中间圆 -->
-  <circle cx="128" cy="128" r="50" fill="none" stroke="#68c882" stroke-width="4" opacity="0.9"/>
+  <!-- 叶脉（左叶） -->
+  <path d="M 100 80 Q 110 110 105 140 Q 103 160 100 180" 
+        stroke="#2E7D32" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 85 100 L 100 130" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M 80 130 L 105 150" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.4"/>
   
-  <!-- 花粉点分布（象征花粉颗粒）-->
-  <circle cx="128" cy="45" r="8" fill="#9AD871"/>
-  <circle cx="190" cy="65" r="7" fill="#FFD400"/>
-  <circle cx="205" cy="128" r="8" fill="#9AD871"/>
-  <circle cx="190" cy="191" r="7" fill="#FFF86F"/>
-  <circle cx="128" cy="205" r="8" fill="#9AD871"/>
-  <circle cx="66" cy="191" r="7" fill="#FFD400"/>
-  <circle cx="51" cy="128" r="8" fill="#FFF86F"/>
-  <circle cx="66" cy="65" r="7" fill="#9AD871"/>
+  <!-- 主叶子（右叶）-->
+  <path d="M 170 190 Q 190 145 185 105 Q 175 65 140 55 Q 155 85 150 125 Q 148 155 155 185 Q 165 195 170 190 Z" 
+        fill="#66BB6A" stroke="#43A047" stroke-width="2"/>
   
-  <!-- 中心叶子图案（生命力象征）-->
-  <g transform="translate(128, 128)">
-    <!-- 上叶 -->
-    <path d="M 0,-25 Q 15,-15 15,0 Q 10,15 0,20 Q -10,15 -15,0 Q -15,-15 0,-25" fill="#45a060" opacity="0.9"/>
-    <!-- 下叶 -->
-    <path d="M 0,25 Q 15,15 15,0 Q 10,-15 0,-20 Q -10,-15 -15,0 Q -15,15 0,25" fill="#357a4a" opacity="0.9"/>
-    <!-- 中心圆 -->
-    <circle cx="0" cy="0" r="8" fill="#a3e0b5"/>
-  </g>
+  <!-- 叶脉（右叶） -->
+  <path d="M 155 85 Q 145 115 150 145 Q 152 165 155 185" 
+        stroke="#43A047" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 170 105 L 150 135" stroke="#43A047" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M 175 135 L 150 160" stroke="#43A047" stroke-width="1" fill="none" opacity="0.4"/>
   
-  <!-- 装饰光圈 -->
-  <circle cx="128" cy="128" r="95" fill="none" stroke="#50b464" stroke-width="1" opacity="0.3" stroke-dasharray="4,4"/>
+  <!-- 中心小叶子（装饰）-->
+  <path d="M 120 140 Q 110 130 115 110 Q 125 95 135 100 Q 130 115 132 135 Q 128 150 120 140 Z" 
+        fill="#81C784" stroke="#558B2F" stroke-width="1.5" opacity="0.8"/>
+  
+  <!-- 茎 -->
+  <path d="M 125 190 L 125 210 Q 120 220 125 230" 
+        stroke="#558B2F" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- 高光效果 -->
+  <ellipse cx="100" cy="110" rx="15" ry="25" fill="#81C784" opacity="0.3" filter="blur(2)"/>
 </svg>
