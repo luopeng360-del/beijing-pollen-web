@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b1710;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1c3526;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="256" height="256" fill="url(#bgGradient)"/>
+  
+  <!-- 外层大圆（花粉浓度）-->
+  <circle cx="128" cy="128" r="70" fill="none" stroke="#a3e0b5" stroke-width="5" opacity="0.8"/>
+  
+  <!-- 中间圆 -->
+  <circle cx="128" cy="128" r="50" fill="none" stroke="#68c882" stroke-width="4" opacity="0.9"/>
+  
+  <!-- 花粉点分布（象征花粉颗粒）-->
+  <circle cx="128" cy="45" r="8" fill="#9AD871"/>
+  <circle cx="190" cy="65" r="7" fill="#FFD400"/>
+  <circle cx="205" cy="128" r="8" fill="#9AD871"/>
+  <circle cx="190" cy="191" r="7" fill="#FFF86F"/>
+  <circle cx="128" cy="205" r="8" fill="#9AD871"/>
+  <circle cx="66" cy="191" r="7" fill="#FFD400"/>
+  <circle cx="51" cy="128" r="8" fill="#FFF86F"/>
+  <circle cx="66" cy="65" r="7" fill="#9AD871"/>
+  
+  <!-- 中心叶子图案（生命力象征）-->
+  <g transform="translate(128, 128)">
+    <!-- 上叶 -->
+    <path d="M 0,-25 Q 15,-15 15,0 Q 10,15 0,20 Q -10,15 -15,0 Q -15,-15 0,-25" fill="#45a060" opacity="0.9"/>
+    <!-- 下叶 -->
+    <path d="M 0,25 Q 15,15 15,0 Q 10,-15 0,-20 Q -10,-15 -15,0 Q -15,15 0,25" fill="#357a4a" opacity="0.9"/>
+    <!-- 中心圆 -->
+    <circle cx="0" cy="0" r="8" fill="#a3e0b5"/>
+  </g>
+  
+  <!-- 装饰光圈 -->
+  <circle cx="128" cy="128" r="95" fill="none" stroke="#50b464" stroke-width="1" opacity="0.3" stroke-dasharray="4,4"/>
+</svg>
