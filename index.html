@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>北京花粉浓度监测</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🌿</span>
+        <span class="logo-text">北京花粉监测</span>
+      </div>
+      <nav class="nav">
+        <a class="nav-item active" data-tab="home" href="#">实时</a>
+        <a class="nav-item" data-tab="trend" href="#">趋势</a>
+        <a class="nav-item" data-tab="forecast" href="#">预报</a>
+        <a class="nav-item" data-tab="guide" href="#">防护</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="main">
+
+    <!-- 加载状态 -->
+    <div id="loading" class="loading-screen">
+      <div class="spinner"></div>
+      <p>正在获取花粉数据…</p>
+    </div>
+
+    <!-- 错误状态 -->
+    <div id="error" class="error-screen hidden">
+      <div class="error-icon">🌿</div>
+      <p id="error-msg">数据加载失败</p>
+      <button onclick="loadData()">重新加载</button>
+    </div>
+
+    <!-- ===== Tab: 实时 ===== -->
+    <section id="tab-home" class="tab-content hidden">
+
+      <!-- 英雄卡片 -->
+      <div class="hero-card" id="hero-card">
+        <div class="hero-top">
+          <div class="hero-location">
+            <span class="pin">📍</span> 北京
+            <span class="season-badge" id="season-badge">春季</span>
+          </div>
+          <div class="hero-update" id="update-time">--</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-icon" id="hero-icon">🌿</div>
+          <div class="hero-info">
+            <div class="hero-label">今日花粉浓度</div>
+            <div class="hero-level" id="hero-level">--</div>
+            <div class="hero-date" id="hero-date">--</div>
+          </div>
+        </div>
+        <div class="hero-msg" id="hero-msg">正在加载…</div>
+      </div>
+
+      <!-- 等级说明 -->
+      <div class="card">
+        <div class="card-title">花粉浓度等级</div>
+        <div class="level-bar-scroll"><div class="level-bar" id="level-bar"></div></div>
+      </div>
+
+      <!-- 近7天 -->
+      <div class="card">
+        <div class="card-title">近7天花粉</div>
+        <div class="week-scroll">
+          <div class="week-list" id="week-list"></div>
+        </div>
+      </div>
+
+      <!-- 快速防护 -->
+      <div class="card advice-quick">
+        <div class="card-title">今日防护建议</div>
+        <div class="advice-grid">
+          <div class="advice-item"><span>😷</span><p>外出佩戴N95口罩</p></div>
+          <div class="advice-item"><span>🏠</span><p>花粉高峰期减少外出</p></div>
+          <div class="advice-item"><span>🚿</span><p>回家后及时洗脸换衣</p></div>
+          <div class="advice-item"><span>💊</span><p>过敏患者遵医嘱用药</p></div>
+        </div>
+      </div>
+
+      <p class="source-note">数据来源：中国天气网 &amp; 首都医科大学附属北京同仁医院</p>
+    </section>
+
+    <!-- ===== Tab: 趋势 ===== -->
+    <section id="tab-trend" class="tab-content hidden">
+      <div class="page-header">
+        <h2>花粉浓度趋势</h2>
+        <p>近14天历史数据</p>
+      </div>
+
+      <!-- 选中详情 -->
+      <div class="card selected-detail" id="selected-detail">
+        <div class="selected-date-row">
+          <span class="sel-date" id="sel-date">--</span>
+          <span class="sel-week" id="sel-week">--</span>
+          <span class="sel-predict hidden" id="sel-predict">预报</span>
+        </div>
+        <div class="selected-level-row">
+          <span class="sel-icon" id="sel-icon">🌿</span>
+          <div>
+            <div class="sel-level" id="sel-level">--</div>
+            <div class="sel-msg" id="sel-msg">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 柱状图 -->
+      <div class="card">
+        <div class="card-title">浓度等级趋势图</div>
+        <div class="chart-container">
+          <div class="chart-y-axis">
+            <span>很高</span><span>高</span><span>中</span><span>低</span><span>很低</span>
+          </div>
+          <div class="chart-bars-wrap">
+            <div class="chart-bars" id="chart-bars"></div>
+          </div>
+        </div>
+        <div class="chart-legend" id="chart-legend"></div>
+      </div>
+
+      <!-- 统计 -->
+      <div class="card">
+        <div class="card-title">近期统计</div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-very-high" style="color:#FFD400">0</div>
+            <div class="stat-label">很高天数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-high" style="color:#FFF86F">0</div>
+            <div class="stat-label">高天数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-mid" style="color:#9AD871">0</div>
+            <div class="stat-label">中天数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-low" style="color:#4A8453">0</div>
+            <div class="stat-label">低天数</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 花粉知识 -->
+      <div class="card">
+        <div class="card-title">花粉知识</div>
+        <div class="knowledge-list">
+          <div class="knowledge-item">
+            <div class="k-title">🌸 北京春季花粉高峰期</div>
+            <div class="k-desc">每年3月中旬至4月底，以柏科、杨柳科花粉为主，是北京花粉浓度最高的时期。</div>
+          </div>
+          <div class="knowledge-item">
+            <div class="k-title">🌬️ 花粉传播规律</div>
+            <div class="k-desc">晴天、风大时花粉浓度高；雨后花粉浓度明显降低。上午10-12时是花粉浓度高峰时段。</div>
+          </div>
+          <div class="knowledge-item">
+            <div class="k-title">🏥 就医建议</div>
+            <div class="k-desc">花粉过敏症状持续或加重时，建议前往北京同仁医院等专业医院就诊，进行过敏原检测。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tab: 预报 ===== -->
+    <section id="tab-forecast" class="tab-content hidden">
+      <div class="page-header">
+        <h2>花粉预报</h2>
+        <p>未来预报数据</p>
+      </div>
+
+      <div class="card" id="forecast-card">
+        <div class="card-title">未来预报</div>
+        <div id="forecast-list"></div>
+        <div class="forecast-note">⚠️ 预报数据仅供参考，实际花粉浓度受天气影响可能有所变化</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">近期实况</div>
+        <div id="history-list"></div>
+      </div>
+
+      <!-- 北京花粉日历 -->
+      <div class="card">
+        <div class="card-title">北京花粉日历</div>
+        <div class="pollen-calendar">
+          <div class="pollen-type"><span class="pt-icon">🌲</span><div class="pt-info"><strong>柏科花粉</strong><span class="pt-period" style="color:#4CAF50">2月下旬 - 4月上旬 · 高峰3月中旬</span><p>北京最主要的致敏花粉，天坛公园、北海公园等地柏树密集，花粉量极大。</p></div></div>
+          <div class="pollen-type"><span class="pt-icon">🌿</span><div class="pt-info"><strong>杨柳科花粉</strong><span class="pt-period" style="color:#8BC34A">3月上旬 - 4月中旬 · 高峰3月下旬</span><p>杨树、柳树花粉，常见于河道两侧和公园绿地，飞絮期同步出现。</p></div></div>
+          <div class="pollen-type"><span class="pt-icon">🍃</span><div class="pt-info"><strong>桦木科花粉</strong><span class="pt-period" style="color:#66BB6A">3月中旬 - 4月下旬 · 高峰4月上旬</span><p>桦树、榛树等花粉，主要分布于北京山区，城区浓度相对较低。</p></div></div>
+          <div class="pollen-type"><span class="pt-icon">🌾</span><div class="pt-info"><strong>禾本科花粉</strong><span class="pt-period" style="color:#9AD871">5月 - 8月 · 高峰6月</span><p>草本植物花粉，夏季高峰，公园草坪、郊区农田附近浓度较高。</p></div></div>
+          <div class="pollen-type"><span class="pt-icon">🌻</span><div class="pt-info"><strong>蒿属花粉</strong><span class="pt-period" style="color:#FFF86F">7月 - 9月 · 高峰8月</span><p>北京秋季最主要的致敏花粉，郊区荒地、河滩分布广泛，过敏人群众多。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tab: 防护 ===== -->
+    <section id="tab-guide" class="tab-content hidden">
+      <div class="page-header">
+        <h2>防护指南</h2>
+        <p>科学防护，远离花粉困扰</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span style="color:#4CAF50">🚶 出行防护</span></div>
+        <ul class="tip-list">
+          <li>外出佩戴N95或KN95口罩，有效过滤花粉颗粒</li>
+          <li>佩戴护目镜或防花粉眼镜，保护眼睛</li>
+          <li>避免在花粉高峰时段（上午10-12时）外出</li>
+          <li>雨后花粉浓度低，是外出的好时机</li>
+          <li>骑车或开车时关闭车窗，使用车内循环空调</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span style="color:#2196F3">🏠 居家防护</span></div>
+        <ul class="tip-list">
+          <li>花粉高峰期关闭门窗，使用空调或空气净化器</li>
+          <li>选用带HEPA滤网的空气净化器，有效过滤花粉</li>
+          <li>晾晒衣物时避免在花粉高峰期，防止花粉附着</li>
+          <li>回家后及时洗脸、洗手，更换外出衣物</li>
+          <li>床上用品定期清洗，减少花粉积累</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span style="color:#9C27B0">💊 用药建议</span></div>
+        <ul class="tip-list">
+          <li>花粉季前2周开始预防性用药效果更佳</li>
+          <li>抗组胺药（如氯雷他定、西替利嗪）可缓解鼻炎症状</li>
+          <li>鼻用激素喷雾是治疗过敏性鼻炎的一线用药</li>
+          <li>症状严重时及时就医，不要自行加大药量</li>
+          <li>脱敏治疗（免疫治疗）可从根本上改善过敏体质</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span style="color:#9AD871">🥗 饮食调理</span></div>
+        <ul class="tip-list">
+          <li>多摄入富含维生素C的食物，增强免疫力</li>
+          <li>避免食用与花粉有交叉反应的食物（如桦树花粉过敏者慎食苹果、桃子）</li>
+          <li>减少辛辣、刺激性食物，避免加重过敏症状</li>
+          <li>保持充足饮水，有助于稀释过敏原</li>
+        </ul>
+      </div>
+
+      <!-- 就医指引 -->
+      <div class="card hospital-card">
+        <div class="card-title">🏥 就医指引</div>
+        <div class="hospital-info">
+          <div class="hospital-name">首都医科大学附属北京同仁医院</div>
+          <div class="hospital-dept">变态反应科（花粉过敏专科）</div>
+          <div class="hospital-addr">📍 东城区东交民巷1号</div>
+          <a class="call-btn" href="tel:010-58269911">📞 010-58269911</a>
+        </div>
+        <div class="hospital-tip">💡 就诊建议：花粉季前1-2个月就诊，可进行过敏原检测和脱敏治疗评估</div>
+      </div>
+
+      <p class="source-note">数据来源：中国天气网 &amp; 首都医科大学附属北京同仁医院</p>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
