@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <!-- 背景 -->
-  <rect width="256" height="256" fill="#1a1a1a"/>
+  <!-- 透明背景 -->
+  <rect width="256" height="256" fill="none" opacity="0"/>
   
   <!-- 🌿 emoji 显示 -->
   <text x="128" y="180" font-size="200" text-anchor="middle" font-family="Apple Color Emoji, Segoe UI Emoji, Arial">🌿</text>
