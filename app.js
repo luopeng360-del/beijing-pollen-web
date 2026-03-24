@@ -83,6 +83,9 @@ function processData(raw) {
   const todayData = dataList.find(d => d.date === todayStr);
   const latestValid = dataList.find(d => !d.isPredict && d.levelCode >= 0);
   const today = (todayData && todayData.levelCode >= 0) ? todayData : (latestValid || dataList[0]);
+  
+  // 标记是否显示的是历史数据（而非今天的数据）
+  const isHistoricalData = !todayData || todayData.levelCode < 0;
 
   // 等级说明列表：替换API颜色为自定义颜色
   const levelNameMap = { '很低': '1', '低': '2', '中': '3', '高': '4', '很高': '5', '未检测到花粉': '0' };
@@ -97,6 +100,7 @@ function processData(raw) {
     seasonLevel,
     seasonLevelName: raw.seasonLevelName || '',
     today,
+    isHistoricalData,
     updateTime: formatDateTime(new Date()),
   };
 }
@@ -121,8 +125,16 @@ function renderHome(data) {
   document.getElementById('update-time').textContent = '更新于 ' + data.updateTime;
   document.getElementById('hero-icon').textContent = info.icon;
   document.getElementById('hero-level').textContent = today.level;
-  document.getElementById('hero-date').textContent = `${today.date} ${today.week}`;
-  document.getElementById('hero-msg').textContent = today.levelMsg || info.advice;
+  
+  // 如果显示的是历史数据，添加提示
+  const dateText = data.isHistoricalData ? `${today.date} ${today.week} (最新数据)` : `${today.date} ${today.week}`;
+  document.getElementById('hero-date').textContent = dateText;
+  
+  // 如果今天数据还没更新，在提示信息中说明
+  const msgText = data.isHistoricalData 
+    ? today.levelMsg || info.advice + '\n💡 提示：今日数据暂未更新，显示最近一天的数据'
+    : today.levelMsg || info.advice;
+  document.getElementById('hero-msg').textContent = msgText;
 
   // 等级条
   const bar = document.getElementById('level-bar');
