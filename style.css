@@ -425,14 +425,7 @@ button { cursor: pointer; border: none; outline: none; }
 .fc-level { font-size: 18px; font-weight: 800; }
 .fc-msg { font-size: 11px; color: var(--text-sub); max-width: 140px; text-align: right; line-height: 1.4; }
 .forecast-note {
-  margin-top: 10px;
-  padding: 9px 11px;
-  background: rgba(255,212,0,0.07);
-  border: 1px solid rgba(255,212,0,0.22);
-  border-radius: 8px;
-  font-size: 11px;
-  color: #FFD400;
-  line-height: 1.6;
+  display: none;
 }
 
 /* ===== History ===== */
